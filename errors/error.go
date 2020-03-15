@@ -74,8 +74,23 @@ func ErrorMessageArray(code string, err []error) (httpCode int, errJson ErrorJso
 		return
 	}
 
+	contract := errContract[code]
+	if contract == "" {
+		log.Printf("error : %v", errGet)
+		errJson.Code = "99"
+		errJson.Desc = "General Error"
+		for e := range err {
+			errJson.Data = append(errJson.Data, ErrorSingleJson{
+				Code: err[e].Error(),
+				Desc: errContract[err[e].Error()],
+			})
+		}
+		httpCode = 500
+		return
+	}
+
 	errJson.Code = code
-	errJson.Desc = "Invalid request"
+	errJson.Desc = errContract[code]
 	httpCode = 400
 	for e := range err {
 		errJson.Data = append(errJson.Data, ErrorSingleJson{
