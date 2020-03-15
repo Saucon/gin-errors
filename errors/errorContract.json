@@ -1,0 +1,11 @@
+{
+    "1000": "Invalid Request",
+    "1001": "ppiproxies is empty or null",
+    "1002": "partner_name is empty or null",
+    "1003": "partner_dev_app is empty or null",
+    "1004": "account is empty or null",
+    "1005": "fee_amount is empty or null",
+    "1006": "job_schedule is empty or null"
+
+    
+}
