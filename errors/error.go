@@ -19,9 +19,12 @@ type ErrorSingleJson struct {
 
 var errContract map[string]string
 
-func getErrorContract() error {
-	file, err := ioutil.ReadFile("errors/errorContract.json")
-	json.Unmarshal([]byte(file), &errContract)
+func getErrorContract() (err error) {
+	var file []byte
+	if errContract == nil {
+		file, err = ioutil.ReadFile("errors/errorContract.json")
+		json.Unmarshal([]byte(file), &errContract)
+	}
 
 	return err
 }
