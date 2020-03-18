@@ -3,7 +3,6 @@ package errors
 import (
 	"encoding/json"
 	"io/ioutil"
-	"log"
 )
 
 type ErrorJson struct {
@@ -33,9 +32,8 @@ func getErrorContract() (err error) {
 func ErrorMessage(err error) (httpCode int, errJson ErrorJson) {
 	errGet := getErrorContract()
 	if errGet != nil {
-		log.Printf("error : %v", errGet)
 		errJson.Code = "99"
-		errJson.Desc = "General Error"
+		errJson.Desc = "Unexpected Error"
 		errJson.Data = append(errJson.Data, ErrorSingleJson{
 			Desc: errGet.Error(),
 		})
@@ -45,9 +43,8 @@ func ErrorMessage(err error) (httpCode int, errJson ErrorJson) {
 
 	contract := errContract[err.Error()]
 	if contract == "" {
-		log.Printf("error : %v", errGet)
 		errJson.Code = "99"
-		errJson.Desc = "General Error"
+		errJson.Desc = "Unexpected Error"
 		errJson.Data = append(errJson.Data, ErrorSingleJson{
 			Desc: err.Error(),
 		})
@@ -64,9 +61,8 @@ func ErrorMessage(err error) (httpCode int, errJson ErrorJson) {
 func ErrorMessageArray(code string, err []error) (httpCode int, errJson ErrorJson) {
 	errGet := getErrorContract()
 	if errGet != nil {
-		log.Printf("error : %v", errGet)
 		errJson.Code = "99"
-		errJson.Desc = "General Error"
+		errJson.Desc = "Unexpected Error"
 		httpCode = 500
 		errJson.Data = append(errJson.Data, ErrorSingleJson{
 			Desc: errGet.Error(),
@@ -76,9 +72,8 @@ func ErrorMessageArray(code string, err []error) (httpCode int, errJson ErrorJso
 
 	contract := errContract[code]
 	if contract == "" {
-		log.Printf("error : %v", errGet)
 		errJson.Code = "99"
-		errJson.Desc = "General Error"
+		errJson.Desc = "Unexpected Error"
 		for e := range err {
 			errJson.Data = append(errJson.Data, ErrorSingleJson{
 				Code: err[e].Error(),
