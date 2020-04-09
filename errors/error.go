@@ -29,7 +29,7 @@ func getErrorContract() (err error) {
 	return err
 }
 
-func ErrorMessage(err error) (httpCode int, errJson ErrorJson) {
+func ErrorMessage(custHttpCode int, err error) (httpCode int, errJson ErrorJson) {
 	errGet := getErrorContract()
 	if errGet != nil {
 		errJson.Code = "99"
@@ -54,11 +54,12 @@ func ErrorMessage(err error) (httpCode int, errJson ErrorJson) {
 
 	errJson.Code = err.Error()
 	errJson.Desc = errContract[err.Error()]
+	httpCode = custHttpCode
 
 	return httpCode, errJson
 }
 
-func ErrorMessageArray(code string, err []error) (httpCode int, errJson ErrorJson) {
+func ErrorMessageArray(custHttpCode int, code string, err []error) (httpCode int, errJson ErrorJson) {
 	errGet := getErrorContract()
 	if errGet != nil {
 		errJson.Code = "99"
@@ -86,7 +87,7 @@ func ErrorMessageArray(code string, err []error) (httpCode int, errJson ErrorJso
 
 	errJson.Code = code
 	errJson.Desc = errContract[code]
-	httpCode = 400
+	httpCode = custHttpCode
 	for e := range err {
 		errJson.Data = append(errJson.Data, ErrorSingleJson{
 			Code: err[e].Error(),
